@@ -1,4 +1,5 @@
 .idea
 .DS_Store
 target/*
-hdi4spark24/target/*
+*.jar
+*.class
