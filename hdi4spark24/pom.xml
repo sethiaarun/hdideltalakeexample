@@ -16,8 +16,8 @@
         <scala.version.minor>12</scala.version.minor>
         <scala.version>${scala.version.major}.${scala.version.minor}</scala.version>
         <java.version>1.8</java.version>
-        <java.source.version>${java.version}</java.source.version>
-        <java.target.version>${java.version}</java.target.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
     </properties>
     <dependencies>
         <dependency>
