@@ -17,27 +17,46 @@ object DeltaLakeExample extends App {
     .builder()
     .config(sparkConf)
     .appName("TestDataLake").getOrCreate()
+  val adsl2Path = "/tmp/deltademodata"
   val numOfRec = 1000
+
   // write using delta lake:q!:
-  spark.range(numOfRec).repartition(1).write.mode("overwrite").format("delta").save("/tmp/deltademodata")
+  spark.range(numOfRec)
+    .repartition(1)
+    .write
+    .mode("overwrite")
+    .format("delta")
+    .save(adsl2Path)
   // read using delta lake
-  val df =spark.read.format("delta").load("/tmp/deltademodata")
+  val df = spark.read.format("delta").load(adsl2Path)
   println(s"Number of records written ${df.count()}")
+
   //read using delta table
+
   import io.delta.tables._
-  val dt: io.delta.tables.DeltaTable = DeltaTable.forPath("/tmp/deltademodata")
+
+  val dt: io.delta.tables.DeltaTable = DeltaTable.forPath(adsl2Path)
   //show available commits
   println("available commits")
   dt.history().show(false)
+
   //add additional data
   // append additional 100 records, it should create another version
-  spark.range(numOfRec,numOfRec+100).repartition(1).write.mode("overwrite").format("delta").save("/tmp/deltademodata")
+  spark.range(numOfRec, numOfRec + 100)
+    .repartition(1)
+    .write
+    .mode("overwrite")
+    .format("delta")
+    .save(adsl2Path)
+
   //show available commits
   println("available commits after append data")
   dt.history().show(false)
+
   // read version zero - time travel
-  val dfVersionZero=spark.read.format("delta").option("versionAsOf",0).load("/tmp/deltademodata")
+  val dfVersionZero = spark.read.format("delta").option("versionAsOf", 0).load(adsl2Path)
   println(s"version zero, number of records ${dfVersionZero.count()}")
+
   //delta table auto refresh
   println(s"Number of records after append ${dt.toDF.count()}")
 }
