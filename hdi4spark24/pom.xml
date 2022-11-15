@@ -16,8 +16,6 @@
         <scala.version.minor>12</scala.version.minor>
         <scala.version>${scala.version.major}.${scala.version.minor}</scala.version>
         <java.version>1.8</java.version>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
     </properties>
     <dependencies>
         <dependency>
@@ -98,8 +96,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>${java.source.version}</source>
-                    <target>${java.target.version}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
